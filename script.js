@@ -45,7 +45,7 @@ function initSnake() {
 let snake1 = initSnake();
 
 let apple = {
-    position: initPosition(),
+    position: initPosition()
 }
 
 let apple2 = {
@@ -53,7 +53,7 @@ let apple2 = {
 }
 
 let hati = {
-    position: initPosition(),
+    position: initPosition()
 }
 
 function drawCell(ctx, x, y, color) {
@@ -443,13 +443,13 @@ function turn(snake, direction) {
 }
 
 document.addEventListener("keydown", function (event) {
-    if (event.key === "ArrowLeft") {
+    if (event.key === "ArrowLeft" || event.key === "a") {
         turn(snake1, DIRECTION.LEFT);
-    } else if (event.key === "ArrowRight") {
+    } else if (event.key === "ArrowRight" || event.key === "d") {
         turn(snake1, DIRECTION.RIGHT);
-    } else if (event.key === "ArrowUp") {
+    } else if (event.key === "ArrowUp" || event.key === "w") {
         turn(snake1, DIRECTION.UP);
-    } else if (event.key === "ArrowDown") {
+    } else if (event.key === "ArrowDown" || event.key === "s") {
         turn(snake1, DIRECTION.DOWN);
     }
 })
