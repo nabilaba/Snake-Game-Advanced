@@ -60,6 +60,8 @@ function drawCellWithImage(img, ctx, x, y) {
     ctx.drawImage(img, x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
 }
 
+var suara_makan = new Audio('assets/suara/suara_makan.wav');
+
 function drawScore(snake) {
     let scoreCanvas = document.getElementById("score1Board");
     let scoreCtx = scoreCanvas.getContext("2d");
@@ -117,6 +119,7 @@ function eat(snake, apple) {
         apple.position = initPosition();
         score++;
         snake.body.push({x: snake.head.x, y: snake.head.y});
+        suara_makan.play();
     }
 }
 
