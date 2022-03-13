@@ -36,7 +36,7 @@ function initDirection() {
     return Math.floor(Math.random() * 4);
 }
 
-function initSnake(color) {
+function initSnake() {
     return {
         ...initHeadAndBody(),
         direction: initDirection()
@@ -72,6 +72,7 @@ function drawNyawa(img, ctx, x, y) {
 var suara_makan = new Audio('assets/suara/suara_makan.wav');
 var suara_nambah_level = new Audio('assets/suara/nambah_level.mp3');
 var suara_mati = new Audio('assets/suara/game-over.mp3');
+var suara_nyawa_berkurang = new Audio('assets/suara/nyawa_berkurang.wav');
 
 let ok = false;
 function leveling(ctx) {
@@ -122,6 +123,7 @@ function buatTantanganHorizontal(ctx, x, panjang, y) {
     for (let i = x; i < panjang; i++) {
         drawCell(ctx, i, y, warna_penghalang);
         if (snake1.head.x == i && snake1.head.y == y) {
+            suara_nyawa_berkurang.play();
             nyawa--;
             snake1 = initSnake();
             initGame();
@@ -137,6 +139,7 @@ function buatTantanganVertical(ctx, x, panjang, y) {
     for (let i = y; i < panjang; i++) {
         drawCell(ctx, x, i, warna_penghalang);
         if (snake1.head.x == x && snake1.head.y == i) {
+            suara_nyawa_berkurang.play();
             nyawa--;
             snake1 = initSnake();
             initGame();
@@ -389,6 +392,7 @@ function checkCollision(snakes) {
         }
     }
     if (isCollide) {
+        suara_nyawa_berkurang.play();
         nyawa--;
         snake1 = initSnake();
     }
@@ -449,6 +453,53 @@ document.addEventListener("keydown", function (event) {
         turn(snake1, DIRECTION.DOWN);
     }
 })
+
+// Android Swipe Control Support
+document.addEventListener('touchstart', handleTouchStart, false);        
+document.addEventListener('touchmove', handleTouchMove, false);
+
+var xDown = null;                                                        
+var yDown = null;
+
+function getTouches(evt) {
+  return evt.touches ||
+         evt.originalEvent.touches;
+}                                                     
+                                                                         
+function handleTouchStart(evt) {
+    const firstTouch = getTouches(evt)[0];                                      
+    xDown = firstTouch.clientX;                                      
+    yDown = firstTouch.clientY;                                      
+};                                                
+                                                                         
+function handleTouchMove(evt) {
+    if ( ! xDown || ! yDown ) {
+        return;
+    }
+
+    var xUp = evt.touches[0].clientX;                                    
+    var yUp = evt.touches[0].clientY;
+
+    var xDiff = xDown - xUp;
+    var yDiff = yDown - yUp;
+                                                                         
+    if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {
+        if ( xDiff > 0 ) {
+            turn(snake1, DIRECTION.LEFT); 
+        } else {
+            turn(snake1, DIRECTION.RIGHT);
+        }                       
+    } else {
+        if ( yDiff > 0 ) {
+            turn(snake1, DIRECTION.UP);
+        } else { 
+            turn(snake1, DIRECTION.DOWN);
+        }                                                                 
+    }
+    
+    xDown = null;
+    yDown = null;                                             
+};
 
 function initGame() {
     move(snake1);
