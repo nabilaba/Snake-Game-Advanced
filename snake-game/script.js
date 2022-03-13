@@ -10,7 +10,7 @@ const DIRECTION = {
     UP: 2,
     DOWN: 3,
 }
-const MOVE_INTERVAL = 150;
+let MOVE_INTERVAL = 150;
 let colorText = "black";
 let score = 0;
 let nyawa = 3;
@@ -70,6 +70,41 @@ function drawNyawa(img, ctx, x, y) {
 }
 
 var suara_makan = new Audio('assets/suara/suara_makan.wav');
+
+let ok = false;
+function leveling(ctx) {
+    if (score === 5) {
+        buatLevelBaru(2, 100);
+    } else if (score === 10) {
+        buatLevelBaru(3, 80);
+    } else if (score === 15) {
+        buatLevelBaru(4, 60);
+    } else if (score === 20) {
+        buatLevelBaru(5, 40);
+    } else if (score === 25) {
+        buatLevelBaru(6, 20);
+        snake1 = initSnake();
+        initGame();
+        MOVE_INTERVAL = 120;
+        nyawa = 3;
+        level = 1;
+        score = 0;
+    } else {
+        ok = false;
+    }
+}
+
+function buatLevelBaru(levelnya, kecepatannya) {
+    if(ok == false) {
+        alert("Level " + level + " Complete");
+        if (nyawa < 3) {
+            nyawa = 3; 
+        }
+        ok = true;
+    }
+    level = levelnya;
+    MOVE_INTERVAL = kecepatannya;
+}
 
 function drawLevel() {
     let levelCanvas = document.getElementById("level");
@@ -138,6 +173,7 @@ function draw() {
 
         ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         
+        leveling(ctx);
         if(snake1.direction === DIRECTION.LEFT) {
             REDRAW_INTERVAL = WIDTH;
             drawCellWithImage(pala_ular_kekiri, ctx, snake1.head.x, snake1.head.y);
