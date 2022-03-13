@@ -10,10 +10,11 @@ const DIRECTION = {
     UP: 2,
     DOWN: 3,
 }
-const MOVE_INTERVAL = 150;
+let MOVE_INTERVAL = 120;
 let colorText = "black";
 let score = 0;
 let nyawa = 3;
+let level = 1;
 
 function initPosition() {
     return {
@@ -69,6 +70,55 @@ function drawNyawa(img, ctx, x, y) {
 }
 
 var suara_makan = new Audio('assets/suara/suara_makan.wav');
+var suara_nambah_level = new Audio('assets/suara/nambah_level.mp3');
+var suara_mati = new Audio('assets/suara/game-over.mp3');
+
+let ok = false;
+function leveling(ctx) {
+    if (score === 5) {
+        buatLevelBaru(2, 100);
+    } else if (score === 10) {
+        buatLevelBaru(3, 80);
+    } else if (score === 15) {
+        buatLevelBaru(4, 60);
+    } else if (score === 20) {
+        buatLevelBaru(5, 40);
+    } else if (score === 25) {
+        buatLevelBaru(6, 20);
+        snake1 = initSnake();
+        initGame();
+        MOVE_INTERVAL = 120;
+        nyawa = 3;
+        level = 1;
+        score = 0;
+    } else {
+        ok = false;
+    }
+}
+
+function buatLevelBaru(levelnya, kecepatannya) {
+    if(ok == false) {
+        alert("Level " + level + " Complete");
+        suara_nambah_level.play();
+        if (nyawa < 3) {
+            nyawa = 3; 
+        }
+        ok = true;
+    }
+    level = levelnya;
+    MOVE_INTERVAL = kecepatannya;
+}
+
+function drawLevel() {
+    let levelCanvas = document.getElementById("level");
+    let levelCtx = levelCanvas.getContext("2d");
+
+    levelCtx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    levelCtx.font = "15px Arial";
+    levelCtx.fillStyle = colorText;
+    levelCtx.textAlign = "center";
+    levelCtx.fillText("Level:" + level, 450, 15);
+}
 
 function drawScore(snake) {
     let scoreCanvas = document.getElementById("score1Board");
@@ -82,6 +132,17 @@ function drawScore(snake) {
     } else {
         scoreCtx.fillText(score, 30, 40);
     }
+}
+
+function drawSpeed() {
+    let speedCanvas = document.getElementById("speed");
+    let speedCtx = speedCanvas.getContext("2d");
+
+    speedCtx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    speedCtx.font = "15px Arial";
+    speedCtx.fillStyle = colorText;
+    speedCtx.textAlign = "center";
+    speedCtx.fillText("Speed :" + MOVE_INTERVAL + ".ms", 450, 15);
 }
 
 const apel = new Image();
@@ -126,6 +187,7 @@ function draw() {
 
         ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         
+        leveling(ctx);
         if(snake1.direction === DIRECTION.LEFT) {
             REDRAW_INTERVAL = WIDTH;
             drawCellWithImage(pala_ular_kekiri, ctx, snake1.head.x, snake1.head.y);
@@ -160,7 +222,10 @@ function draw() {
             drawNyawa(gambar_nyawa, ctx, 25 * i + 5, 5);
         }
 
+        drawLevel();
         drawScore(snake1);
+        drawSpeed();
+
     }, REDRAW_INTERVAL);
 }
 
