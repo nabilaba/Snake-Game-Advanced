@@ -10,7 +10,7 @@ const DIRECTION = {
     UP: 2,
     DOWN: 3,
 }
-let MOVE_INTERVAL = 150;
+let MOVE_INTERVAL = 120;
 let colorText = "black";
 let score = 0;
 let nyawa = 3;
@@ -70,6 +70,8 @@ function drawNyawa(img, ctx, x, y) {
 }
 
 var suara_makan = new Audio('assets/suara/suara_makan.wav');
+var suara_nambah_level = new Audio('assets/suara/nambah_level.mp3');
+var suara_mati = new Audio('assets/suara/game-over.mp3');
 
 let ok = false;
 function leveling(ctx) {
@@ -97,6 +99,7 @@ function leveling(ctx) {
 function buatLevelBaru(levelnya, kecepatannya) {
     if(ok == false) {
         alert("Level " + level + " Complete");
+        suara_nambah_level.play();
         if (nyawa < 3) {
             nyawa = 3; 
         }
@@ -222,7 +225,7 @@ function draw() {
         drawLevel();
         drawScore(snake1);
         drawSpeed();
-        
+
     }, REDRAW_INTERVAL);
 }
 
