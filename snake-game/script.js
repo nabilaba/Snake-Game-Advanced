@@ -13,6 +13,7 @@ const DIRECTION = {
 const MOVE_INTERVAL = 150;
 let colorText = "black";
 let score = 0;
+let nyawa = 3;
 
 function initPosition() {
     return {
@@ -59,6 +60,10 @@ function drawCellWithImage(img, ctx, x, y) {
     ctx.drawImage(img, x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
 }
 
+function drawNyawa(img, ctx, x, y) {
+    ctx.drawImage(img, x, y, 20, 20);
+}
+
 var suara_makan = new Audio('assets/suara/suara_makan.wav');
 
 function drawScore(snake) {
@@ -78,6 +83,10 @@ function drawScore(snake) {
 const apel = new Image();
 apel.onload = draw;
 apel.src = 'assets/gambar/apple.png';
+
+const gambar_nyawa = new Image();
+gambar_nyawa.onload = draw;
+gambar_nyawa.src = 'assets/gambar/nyawa.png';
 
 let pala_ular_kekiri = new Image();
 pala_ular_kekiri.onload = draw;
@@ -125,6 +134,10 @@ function draw() {
         
         drawCellWithImage(apel, ctx, apple.position.x, apple.position.y);
         drawCellWithImage(apel, ctx, apple2.position.x, apple2.position.y);
+
+        for (let i = 0; i < nyawa; i++) {
+            drawNyawa(gambar_nyawa, ctx, 25 * i + 5, 5);
+        }
 
         drawScore(snake1);
     }, REDRAW_INTERVAL);
