@@ -71,10 +71,10 @@ function drawNyawa(img, ctx, x, y) {
 
 var suara_makan = new Audio('assets/suara/suara_makan.wav');
 var suara_nambah_level = new Audio('assets/suara/nambah_level.mp3');
-var suara_mati = new Audio('assets/suara/game-over.mp3');
 
 let ok = false;
 function leveling(ctx) {
+    tantangan(ctx);
     if (score === 5) {
         buatLevelBaru(2, 100);
     } else if (score === 10) {
@@ -93,6 +93,62 @@ function leveling(ctx) {
         score = 0;
     } else {
         ok = false;
+    }
+}
+
+function tantangan(ctx) {
+    if (level === 2) {
+        buatTantanganHorizontal(ctx, 5, WIDTH - 5, 4);
+        buatTantanganHorizontal(ctx, 5, WIDTH - 5, HEIGHT - 5);
+    } else if (level === 3) {
+        buatTantanganVertical(ctx, 4, HEIGHT - 4, 6);
+        buatTantanganVertical(ctx, WIDTH - 5, HEIGHT - 5, 6);
+        buatTantanganVertical(ctx, WIDTH/2 - WIDTH/6, HEIGHT - 9, 9);
+        buatTantanganVertical(ctx, WIDTH/2 + WIDTH/6, HEIGHT - 9, 9);
+    } else if (level === 4) {
+        buatTantanganVertical(ctx, 4, HEIGHT - 5, 6);
+        buatTantanganVertical(ctx, WIDTH - 5, HEIGHT - 5, 6);
+        buatTantanganHorizontal(ctx, 10, WIDTH - 10, 3);
+        buatTantanganHorizontal(ctx, 10, WIDTH - 10, HEIGHT -4);
+    } else if (level === 5) {
+        buatTantanganVertical(ctx, WIDTH/2, HEIGHT - 1, 1);
+        buatTantanganHorizontal(ctx, 1, WIDTH - 1, HEIGHT/2);
+    }
+}
+
+function buatTantanganHorizontal(ctx, x, panjang, y) {
+    let warna_penghalang = "orange";
+    for (let i = x; i < panjang; i++) {
+        drawCell(ctx, i, y, warna_penghalang);
+        if (snake1.head.x == i && snake1.head.y == y) {
+            nyawa--;
+            snake1 = initSnake();
+            initGame();
+        }
+        antisipasi(apple, i, y);
+        antisipasi(apple2, i, y);
+        antisipasi(hati, i, y);
+    }
+}
+
+function buatTantanganVertical(ctx, x, panjang, y) {
+    let warna_penghalang = "orange";
+    for (let i = y; i < panjang; i++) {
+        drawCell(ctx, x, i, warna_penghalang);
+        if (snake1.head.x == x && snake1.head.y == i) {
+            nyawa--;
+            snake1 = initSnake();
+            initGame();
+        }
+        antisipasi(apple, i, y);
+        antisipasi(apple2, i, y);
+        antisipasi(hati, i, y);
+    }
+}
+
+function antisipasi(object, i, y) {
+    if (object.position.x === i && object.position.y === y) {
+        object.position = initPosition();
     }
 }
 
