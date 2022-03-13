@@ -131,6 +131,17 @@ function drawScore(snake) {
     }
 }
 
+function drawSpeed() {
+    let speedCanvas = document.getElementById("speed");
+    let speedCtx = speedCanvas.getContext("2d");
+
+    speedCtx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    speedCtx.font = "15px Arial";
+    speedCtx.fillStyle = colorText;
+    speedCtx.textAlign = "center";
+    speedCtx.fillText("Speed :" + MOVE_INTERVAL + ".ms", 450, 15);
+}
+
 const apel = new Image();
 apel.onload = draw;
 apel.src = 'assets/gambar/apple.png';
@@ -210,6 +221,8 @@ function draw() {
 
         drawLevel();
         drawScore(snake1);
+        drawSpeed();
+        
     }, REDRAW_INTERVAL);
 }
 
