@@ -36,12 +36,11 @@ function initDirection() {
 
 function initSnake(color) {
     return {
-        color: color,
         ...initHeadAndBody(),
         direction: initDirection()
     }
 }
-let snake1 = initSnake("purple");
+let snake1 = initSnake();
 
 let apple = {
     position: initPosition(),
@@ -80,6 +79,22 @@ const apel = new Image();
 apel.onload = draw;
 apel.src = 'assets/gambar/apple.png';
 
+let pala_ular_kekiri = new Image();
+pala_ular_kekiri.onload = draw;
+pala_ular_kekiri.src = 'assets/gambar/pala_kekiri.png';
+
+let pala_ular_kekanan = new Image();
+pala_ular_kekanan.onload = draw;
+pala_ular_kekanan.src = 'assets/gambar/pala_kekanan.png';
+
+let pala_ular_keatas = new Image();
+pala_ular_keatas.onload = draw;
+pala_ular_keatas.src = 'assets/gambar/pala_keatas.png';
+
+let pala_ular_kebawah = new Image();
+pala_ular_kebawah.onload = draw;
+pala_ular_kebawah.src = 'assets/gambar/pala_kebawah.png';
+
 function draw() {
     setInterval(function() {
         let snakeCanvas = document.getElementById("snakeBoard");
@@ -87,9 +102,25 @@ function draw() {
 
         ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         
-        drawCell(ctx, snake1.head.x, snake1.head.y, snake1.color);
+        if(snake1.direction === DIRECTION.LEFT) {
+            REDRAW_INTERVAL = WIDTH;
+            drawCellWithImage(pala_ular_kekiri, ctx, snake1.head.x, snake1.head.y);
+        } else if(snake1.direction === DIRECTION.RIGHT) {
+            REDRAW_INTERVAL = WIDTH;
+            drawCellWithImage(pala_ular_kekanan, ctx, snake1.head.x, snake1.head.y);
+        } else if(snake1.direction === DIRECTION.UP) {
+            REDRAW_INTERVAL = HEIGHT;
+            drawCellWithImage(pala_ular_keatas, ctx, snake1.head.x, snake1.head.y);
+        } else if(snake1.direction === DIRECTION.DOWN) {
+            REDRAW_INTERVAL = HEIGHT;
+            drawCellWithImage(pala_ular_kebawah, ctx, snake1.head.x, snake1.head.y);
+        }
         for (let i = 1; i < snake1.body.length; i++) {
-            drawCell(ctx, snake1.body[i].x, snake1.body[i].y, snake1.color);
+            if (i % 2 == 0) {
+                drawCell(ctx, snake1.body[i].x, snake1.body[i].y, "#a4b4f1");
+            } else {
+                drawCell(ctx, snake1.body[i].x, snake1.body[i].y, "#5c7cfc");
+            }
         }
         
         drawCellWithImage(apel, ctx, apple.position.x, apple.position.y);
@@ -165,7 +196,7 @@ function checkCollision(snakes) {
     }
     if (isCollide) {
         alert("Game over");
-        snake1 = initSnake("purple");
+        snake1 = initSnake();
     }
     return isCollide;
 }
