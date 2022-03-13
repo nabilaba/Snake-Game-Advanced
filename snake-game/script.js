@@ -36,12 +36,11 @@ function initDirection() {
 
 function initSnake(color) {
     return {
-        color: color,
         ...initHeadAndBody(),
         direction: initDirection()
     }
 }
-let snake1 = initSnake("purple");
+let snake1 = initSnake();
 
 let apple = {
     position: initPosition(),
@@ -87,9 +86,13 @@ function draw() {
 
         ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         
-        drawCell(ctx, snake1.head.x, snake1.head.y, snake1.color);
+        drawCell(ctx, snake1.head.x, snake1.head.y, "#5c7cfc");
         for (let i = 1; i < snake1.body.length; i++) {
-            drawCell(ctx, snake1.body[i].x, snake1.body[i].y, snake1.color);
+            if (i % 2 == 0) {
+                drawCell(ctx, snake1.body[i].x, snake1.body[i].y, "#a4b4f1");
+            } else {
+                drawCell(ctx, snake1.body[i].x, snake1.body[i].y, "#5c7cfc");
+            }
         }
         
         drawCellWithImage(apel, ctx, apple.position.x, apple.position.y);
@@ -165,7 +168,7 @@ function checkCollision(snakes) {
     }
     if (isCollide) {
         alert("Game over");
-        snake1 = initSnake("purple");
+        snake1 = initSnake();
     }
     return isCollide;
 }
