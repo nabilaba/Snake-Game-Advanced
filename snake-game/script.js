@@ -71,6 +71,7 @@ function drawNyawa(img, ctx, x, y) {
 
 var suara_makan = new Audio('assets/suara/suara_makan.wav');
 var suara_nambah_level = new Audio('assets/suara/nambah_level.mp3');
+var suara_mati = new Audio('assets/suara/game-over.mp3');
 
 let ok = false;
 function leveling(ctx) {
@@ -283,6 +284,7 @@ function draw() {
         drawSpeed();
 
         if(nyawa < 1) {
+            suara_mati.play();
             alert("Yah Mati");
             MOVE_INTERVAL = 120;
             nyawa = 3;
