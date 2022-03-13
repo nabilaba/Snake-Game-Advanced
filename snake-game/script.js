@@ -51,6 +51,10 @@ let apple2 = {
     position: initPosition()
 }
 
+let hati = {
+    position: initPosition(),
+}
+
 function drawCell(ctx, x, y, color) {
     ctx.fillStyle = color;
     ctx.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
@@ -135,6 +139,8 @@ function draw() {
         drawCellWithImage(apel, ctx, apple.position.x, apple.position.y);
         drawCellWithImage(apel, ctx, apple2.position.x, apple2.position.y);
 
+        drawCellWithImage(gambar_nyawa, ctx, hati.position.x, hati.position.y);
+
         for (let i = 0; i < nyawa; i++) {
             drawNyawa(gambar_nyawa, ctx, 25 * i + 5, 5);
         }
@@ -167,11 +173,21 @@ function eat(snake, apple) {
     }
 }
 
+function makanHati(snake) {
+    if (snake.head.x == hati.position.x && snake.head.y == hati.position.y) {
+        hati.position = initPosition();
+        score++;
+        snake.body.push({x: snake.head.x, y: snake.head.y});
+        nyawa++;
+    }
+}
+
 function moveLeft(snake) {
     snake.head.x--;
     teleport(snake);
     eat(snake, apple);
     eat(snake, apple2);
+    makanHati(snake);
 }
 
 function moveRight(snake) {
@@ -179,6 +195,7 @@ function moveRight(snake) {
     teleport(snake);
     eat(snake, apple);
     eat(snake, apple2);
+    makanHati(snake);
 }
 
 function moveDown(snake) {
@@ -186,6 +203,7 @@ function moveDown(snake) {
     teleport(snake);
     eat(snake, apple);
     eat(snake, apple2);
+    makanHati(snake);
 }
 
 function moveUp(snake) {
@@ -193,6 +211,7 @@ function moveUp(snake) {
     teleport(snake);
     eat(snake, apple);
     eat(snake, apple2);
+    makanHati(snake);
 }
 
 function checkCollision(snakes) {
