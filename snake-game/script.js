@@ -47,6 +47,10 @@ let apple = {
     position: initPosition(),
 }
 
+let apple2 = {
+    position: initPosition()
+}
+
 function drawCell(ctx, x, y, color) {
     ctx.fillStyle = color;
     ctx.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
@@ -87,6 +91,7 @@ function draw() {
         }
         
         drawCellWithImage(apel, ctx, apple.position.x, apple.position.y);
+        drawCellWithImage(apel, ctx, apple2.position.x, apple2.position.y);
 
         drawScore(snake1);
     }, REDRAW_INTERVAL);
@@ -119,24 +124,28 @@ function moveLeft(snake) {
     snake.head.x--;
     teleport(snake);
     eat(snake, apple);
+    eat(snake, apple2);
 }
 
 function moveRight(snake) {
     snake.head.x++;
     teleport(snake);
     eat(snake, apple);
+    eat(snake, apple2);
 }
 
 function moveDown(snake) {
     snake.head.y++;
     teleport(snake);
     eat(snake, apple);
+    eat(snake, apple2);
 }
 
 function moveUp(snake) {
     snake.head.y--;
     teleport(snake);
     eat(snake, apple);
+    eat(snake, apple2);
 }
 
 function checkCollision(snakes) {
