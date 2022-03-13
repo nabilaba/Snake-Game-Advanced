@@ -14,6 +14,7 @@ const MOVE_INTERVAL = 150;
 let colorText = "black";
 let score = 0;
 let nyawa = 3;
+let level = 1;
 
 function initPosition() {
     return {
@@ -69,6 +70,17 @@ function drawNyawa(img, ctx, x, y) {
 }
 
 var suara_makan = new Audio('assets/suara/suara_makan.wav');
+
+function drawLevel() {
+    let levelCanvas = document.getElementById("level");
+    let levelCtx = levelCanvas.getContext("2d");
+
+    levelCtx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    levelCtx.font = "15px Arial";
+    levelCtx.fillStyle = colorText;
+    levelCtx.textAlign = "center";
+    levelCtx.fillText("Level:" + level, 450, 15);
+}
 
 function drawScore(snake) {
     let scoreCanvas = document.getElementById("score1Board");
@@ -160,6 +172,7 @@ function draw() {
             drawNyawa(gambar_nyawa, ctx, 25 * i + 5, 5);
         }
 
+        drawLevel();
         drawScore(snake1);
     }, REDRAW_INTERVAL);
 }
