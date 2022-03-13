@@ -108,6 +108,17 @@ let pala_ular_kebawah = new Image();
 pala_ular_kebawah.onload = draw;
 pala_ular_kebawah.src = 'assets/gambar/pala_kebawah.png';
 
+function cekPrima(nilai) {
+    if (nilai > 1) {
+        for(x = 2; x < nilai; x++) {
+            if((nilai % x) == 0 && nilai > 2) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
 function draw() {
     setInterval(function() {
         let snakeCanvas = document.getElementById("snakeBoard");
@@ -139,8 +150,12 @@ function draw() {
         drawCellWithImage(apel, ctx, apple.position.x, apple.position.y);
         drawCellWithImage(apel, ctx, apple2.position.x, apple2.position.y);
 
-        drawCellWithImage(gambar_nyawa, ctx, hati.position.x, hati.position.y);
-
+        var frequency = 200;
+        if (cekPrima(score)) {
+            if (Math.floor(Date.now() / frequency) % 2) {
+                drawCellWithImage(gambar_nyawa, ctx, hati.position.x, hati.position.y);
+            }
+        }
         for (let i = 0; i < nyawa; i++) {
             drawNyawa(gambar_nyawa, ctx, 25 * i + 5, 5);
         }
@@ -179,6 +194,7 @@ function makanHati(snake) {
         score++;
         snake.body.push({x: snake.head.x, y: snake.head.y});
         nyawa++;
+        suara_makan.play();
     }
 }
 
@@ -187,7 +203,11 @@ function moveLeft(snake) {
     teleport(snake);
     eat(snake, apple);
     eat(snake, apple2);
-    makanHati(snake);
+    if (cekPrima(score)) {
+        makanHati(snake);
+    } else {
+        hati.position = initPosition();
+    }
 }
 
 function moveRight(snake) {
@@ -195,7 +215,11 @@ function moveRight(snake) {
     teleport(snake);
     eat(snake, apple);
     eat(snake, apple2);
-    makanHati(snake);
+    if (cekPrima(score)) {
+        makanHati(snake);
+    } else {
+        hati.position = initPosition();
+    }
 }
 
 function moveDown(snake) {
@@ -203,7 +227,11 @@ function moveDown(snake) {
     teleport(snake);
     eat(snake, apple);
     eat(snake, apple2);
-    makanHati(snake);
+    if (cekPrima(score)) {
+        makanHati(snake);
+    } else {
+        hati.position = initPosition();
+    }
 }
 
 function moveUp(snake) {
@@ -211,7 +239,11 @@ function moveUp(snake) {
     teleport(snake);
     eat(snake, apple);
     eat(snake, apple2);
-    makanHati(snake);
+    if (cekPrima(score)) {
+        makanHati(snake);
+    } else {
+        hati.position = initPosition();
+    }
 }
 
 function checkCollision(snakes) {
