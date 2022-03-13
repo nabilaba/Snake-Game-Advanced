@@ -13,6 +13,7 @@ const DIRECTION = {
 const MOVE_INTERVAL = 150;
 let colorText = "black";
 let score = 0;
+let nyawa = 3;
 
 function initPosition() {
     return {
@@ -50,6 +51,10 @@ let apple2 = {
     position: initPosition()
 }
 
+let hati = {
+    position: initPosition(),
+}
+
 function drawCell(ctx, x, y, color) {
     ctx.fillStyle = color;
     ctx.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
@@ -57,6 +62,10 @@ function drawCell(ctx, x, y, color) {
 
 function drawCellWithImage(img, ctx, x, y) {
     ctx.drawImage(img, x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+}
+
+function drawNyawa(img, ctx, x, y) {
+    ctx.drawImage(img, x, y, 20, 20);
 }
 
 var suara_makan = new Audio('assets/suara/suara_makan.wav');
@@ -79,6 +88,10 @@ const apel = new Image();
 apel.onload = draw;
 apel.src = 'assets/gambar/apple.png';
 
+const gambar_nyawa = new Image();
+gambar_nyawa.onload = draw;
+gambar_nyawa.src = 'assets/gambar/nyawa.png';
+
 let pala_ular_kekiri = new Image();
 pala_ular_kekiri.onload = draw;
 pala_ular_kekiri.src = 'assets/gambar/pala_kekiri.png';
@@ -94,6 +107,17 @@ pala_ular_keatas.src = 'assets/gambar/pala_keatas.png';
 let pala_ular_kebawah = new Image();
 pala_ular_kebawah.onload = draw;
 pala_ular_kebawah.src = 'assets/gambar/pala_kebawah.png';
+
+function cekPrima(nilai) {
+    if (nilai > 1) {
+        for(x = 2; x < nilai; x++) {
+            if((nilai % x) == 0 && nilai > 2) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
 
 function draw() {
     setInterval(function() {
@@ -126,6 +150,16 @@ function draw() {
         drawCellWithImage(apel, ctx, apple.position.x, apple.position.y);
         drawCellWithImage(apel, ctx, apple2.position.x, apple2.position.y);
 
+        var frequency = 200;
+        if (cekPrima(score)) {
+            if (Math.floor(Date.now() / frequency) % 2) {
+                drawCellWithImage(gambar_nyawa, ctx, hati.position.x, hati.position.y);
+            }
+        }
+        for (let i = 0; i < nyawa; i++) {
+            drawNyawa(gambar_nyawa, ctx, 25 * i + 5, 5);
+        }
+
         drawScore(snake1);
     }, REDRAW_INTERVAL);
 }
@@ -154,11 +188,26 @@ function eat(snake, apple) {
     }
 }
 
+function makanHati(snake) {
+    if (snake.head.x == hati.position.x && snake.head.y == hati.position.y) {
+        hati.position = initPosition();
+        score++;
+        snake.body.push({x: snake.head.x, y: snake.head.y});
+        nyawa++;
+        suara_makan.play();
+    }
+}
+
 function moveLeft(snake) {
     snake.head.x--;
     teleport(snake);
     eat(snake, apple);
     eat(snake, apple2);
+    if (cekPrima(score)) {
+        makanHati(snake);
+    } else {
+        hati.position = initPosition();
+    }
 }
 
 function moveRight(snake) {
@@ -166,6 +215,11 @@ function moveRight(snake) {
     teleport(snake);
     eat(snake, apple);
     eat(snake, apple2);
+    if (cekPrima(score)) {
+        makanHati(snake);
+    } else {
+        hati.position = initPosition();
+    }
 }
 
 function moveDown(snake) {
@@ -173,6 +227,11 @@ function moveDown(snake) {
     teleport(snake);
     eat(snake, apple);
     eat(snake, apple2);
+    if (cekPrima(score)) {
+        makanHati(snake);
+    } else {
+        hati.position = initPosition();
+    }
 }
 
 function moveUp(snake) {
@@ -180,6 +239,11 @@ function moveUp(snake) {
     teleport(snake);
     eat(snake, apple);
     eat(snake, apple2);
+    if (cekPrima(score)) {
+        makanHati(snake);
+    } else {
+        hati.position = initPosition();
+    }
 }
 
 function checkCollision(snakes) {
