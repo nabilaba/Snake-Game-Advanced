@@ -44,13 +44,16 @@ function initSnake(color) {
 let snake1 = initSnake("purple");
 
 let apple = {
-    color: "red",
     position: initPosition(),
 }
 
 function drawCell(ctx, x, y, color) {
     ctx.fillStyle = color;
     ctx.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+}
+
+function drawCellWithImage(img, ctx, x, y) {
+    ctx.drawImage(img, x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
 }
 
 function drawScore(snake) {
@@ -67,6 +70,10 @@ function drawScore(snake) {
     }
 }
 
+const apel = new Image();
+apel.onload = draw;
+apel.src = 'assets/gambar/apple.png';
+
 function draw() {
     setInterval(function() {
         let snakeCanvas = document.getElementById("snakeBoard");
@@ -79,7 +86,7 @@ function draw() {
             drawCell(ctx, snake1.body[i].x, snake1.body[i].y, snake1.color);
         }
         
-        drawCell(ctx, apple.position.x, apple.position.y, apple.color);
+        drawCellWithImage(apel, ctx, apple.position.x, apple.position.y);
 
         drawScore(snake1);
     }, REDRAW_INTERVAL);
