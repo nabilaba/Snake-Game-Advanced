@@ -125,6 +125,9 @@ function buatTantanganHorizontal(ctx, x, panjang, y) {
             snake1 = initSnake();
             initGame();
         }
+        antisipasi(apple, i, y);
+        antisipasi(apple2, i, y);
+        antisipasi(hati, i, y);
     }
 }
 
@@ -137,6 +140,15 @@ function buatTantanganVertical(ctx, x, panjang, y) {
             snake1 = initSnake();
             initGame();
         }
+        antisipasi(apple, i, y);
+        antisipasi(apple2, i, y);
+        antisipasi(hati, i, y);
+    }
+}
+
+function antisipasi(object, i, y) {
+    if (object.position.x === i && object.position.y === y) {
+        object.position = initPosition();
     }
 }
 
