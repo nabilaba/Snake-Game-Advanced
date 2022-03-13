@@ -174,7 +174,7 @@ function drawLevel() {
     levelCtx.font = "15px Arial";
     levelCtx.fillStyle = colorText;
     levelCtx.textAlign = "center";
-    levelCtx.fillText("Level:" + level, 450, 15);
+    levelCtx.fillText("Snake Game - Level:" + level, 450, 15);
 }
 
 function drawScore(snake) {
