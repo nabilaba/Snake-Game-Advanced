@@ -153,8 +153,8 @@ function buatTantanganVertical(ctx, x, panjang, y) {
         antisipasi(apple, x, i);
         antisipasi(apple2, x, i);
         antisipasi(hati, x, i);
-        tantanganPosition.position.x = i;
-        tantanganPosition.position.y = y;
+        tantanganPosition.position.x = x;
+        tantanganPosition.position.y = i;
     }
 }
 
