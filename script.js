@@ -346,9 +346,10 @@ function moveLeft(snake) {
     eat(snake, apple2);
     if (cekPrima(score)) {
         makanHati(snake);
-    } else {
-        hati.position = initPosition();
     }
+    antisipasi(apple, tantanganPosition.position.x, tantanganPosition.position.y);
+    antisipasi(apple2, tantanganPosition.position.x, tantanganPosition.position.y);
+    antisipasi(hati, tantanganPosition.position.x, tantanganPosition.position.y);
 }
 
 function moveRight(snake) {
